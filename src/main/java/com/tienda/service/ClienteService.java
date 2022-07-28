@@ -13,4 +13,6 @@ public interface ClienteService {
     
     public Cliente getCliente(Cliente cliente);
     
+    public Cliente getApellido(Cliente cliente);
+    
 }

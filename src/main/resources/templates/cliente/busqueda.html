@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/199/xhtml">
+    <head>
+        <title>TechShop</title>
+        <meta charset="UTF-8">
+        <link href="/css/menu.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body>
+        <header th:replace="layout/plantilla :: header"/>
+        <div class="contenido">
+            <h2>Datos de Cliente</h2>
+            <a th:href="@{/cliente/listado}">Regresar</a>
+            <br/>
+            <form th:action="@{/cliente/buscar/} + ${cliente.apellidos}"
+                  method="post"
+                  th:object="${cliente}">
+                <input type="hidden" name="idCliente" th:field="*{idCliente}"/>            
+                <label for="apellidos">Apellidos:</label>
+                <input type="text" name="apellidos" th:field="*{apellidos}"/>
+                <br/>
+                <input type="submit" name="buscar" value="Buscar"/>
+                <br/>
+            </form>
+        </div>    
+        <footer th:replace="layout/plantilla :: footer"/>
+    </body>
+</html>

@@ -28,6 +28,18 @@ public class ClienteController {
         return "/cliente/modifica";
     }
     
+    @GetMapping("/cliente/busqueda")
+    public String buscarCliente(Cliente cliente) {
+        return "/cliente/busqueda";
+    }
+    
+    @PostMapping("/cliente/buscar/{apellidos}")
+    public String buscarApellidos(Cliente cliente, Model model) {
+        cliente = clienteService.getApellido(cliente);
+        model.addAttribute("cliente", cliente);
+        return "/cliente/modifica";
+    }
+    
     @PostMapping("/cliente/guardar")
     public String guardarCliente(Cliente cliente) {
         clienteService.save(cliente);
