@@ -1,36 +1,32 @@
+
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://wwww.thymeleaf.org" 
-      xmlns:sec="http://thymeleaft.org/extras/spring-security">
-    <head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://thymeleaf.org/extras/spring-security">
+    <head th:replace="layout/plantilla :: head">
         <title>TechShop</title>
-        <meta charset="UTF-8">
-            <link href="/css/menu.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <header th:replace="layout/plantilla :: header"/>
-        <div class="contenido">
-            <h2 th:text="#{index.titulo}">Nuestros Articulos</h2>
-            <div th:if="${articulos != null and !articulos.empty}">
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th th:text="#{articulo.descripcion}">Descripción</th>
-                            <th th:text="#{articulo.precio}">Precio</th>
-                            <th th:text="#{articulo.comprar}">Comprar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="articulo : ${articulos}">
-                            <td th:text="${articulo.descripcion}"></td>
-                            <td th:text="${articulo.precio}"></td>
-                            <td><a th:href="@{/carrito/agregar/} + ${articulo.idArticulo}" th:text="#{accion.agregar}">Agregar</a></td>
-                        </tr>
-                    </tbody>
-                </table>  
+
+        <div class="container">
+            <h2>[[#{index.titulo}]]</h2>
+
+            <div class="row row-cols-3" th:if="${articulos != null and !articulos.empty}">                
+                <div class="card" th:each="articulo : ${articulos}">
+                    <div class="card-body">
+                        <h5 class="card-title">[[${articulo.descripcion}]]</h5>
+                        <h6 class="card-subtile mb-2 text-muted text-end">
+                            [[${new java.text.DecimalFormat('¢#,##0.00').format(articulo.precio)}]]
+                        </h6>
+                        <a class='card-link' th:href="@{/carrito/agregar/}+${articulo.idArticulo}">[[#{articulo.comprar}]]</a>
+                        <img src="/img/alienware.jpg" alt="computadora"/>
+                        <p class="card-text">[[${articulo.detalle}]]</p>
+                    </div>
+                </div>
             </div>
-            <div th:if="${articulos == null or articulos.empty}" th:text="#{articulo.no_mostrar}">
-                No tenemos lista de articulos que mostrar...
+            <div th:if="${articulos == null or articulos.empty}">
+                <h3>[[#{articulo.no_mostrar}]]</h3>
             </div>
         </div>
         <footer th:replace="layout/plantilla :: footer"/>

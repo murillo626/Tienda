@@ -12,31 +12,43 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 @Slf4j
 public class ClienteController {
-    
+
     @Autowired
     private ClienteService clienteService;
+
+    @GetMapping("/cliente/busqueda")
+    public String busqueda(Cliente cliente) {        
+        return "/cliente/buscar";
+    }
+    
+    @PostMapping("/cliente/buscar")
+    public String buscar(Cliente cliente, Model model) {        
+        cliente = clienteService.findByApellidos(cliente);
+        if (cliente!=null) {
+            model.addAttribute("cliente",cliente);
+            return "/cliente/modifica";
+        } else {
+            return "/cliente/buscar";
+        }
+    }
     
     @GetMapping("/cliente/listado")
     public String inicio(Model model) {
         var clientes = clienteService.getClientes();
-        model.addAttribute("clientes",clientes);
+        
+        var limiteTotal=0;
+        for (var c: clientes) {
+            limiteTotal+=c.getCredito().getLimite();
+        }
+        
+        model.addAttribute("limiteTotal",limiteTotal);
+        model.addAttribute("totalClientes",clientes.size());
+        model.addAttribute("clientes", clientes);
         return "/cliente/listado";
     }
-    
+
     @GetMapping("/cliente/nuevo")
-    public String nuevoCliente(Cliente cliente) {
-        return "/cliente/modifica";
-    }
-    
-    @GetMapping("/cliente/busqueda")
-    public String buscarCliente(Cliente cliente) {
-        return "/cliente/busqueda";
-    }
-    
-    @PostMapping("/cliente/buscar/{apellidos}")
-    public String buscarApellidos(Cliente cliente, Model model) {
-        cliente = clienteService.getApellido(cliente);
-        model.addAttribute("cliente", cliente);
+    public String nuevoCliente(Cliente cliente) {        
         return "/cliente/modifica";
     }
     
@@ -46,10 +58,12 @@ public class ClienteController {
         return "redirect:/cliente/listado";
     }
     
-    @GetMapping("/cliente/modificar/{idCliente}")
+    
+    
+    @GetMapping("/cliente/modifica/{idCliente}")
     public String modificarCliente(Cliente cliente, Model model) {
         cliente = clienteService.getCliente(cliente);
-        model.addAttribute("cliente", cliente);
+        model.addAttribute("cliente",cliente);
         return "/cliente/modifica";
     }
     

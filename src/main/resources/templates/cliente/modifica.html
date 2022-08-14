@@ -1,41 +1,42 @@
+
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://wwww.thymeleaf.org" 
-      xmlns:sec="http://thymeleaft.org/extras/spring-security">
-    <head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://thymeleaf.org/extras/spring-security">
+    <head th:replace="layout/plantilla :: head">
         <title>TechShop</title>
-        <meta charset="UTF-8">
-        <link href="/css/menu.css" rel="stylesheet" type="text/css"/>
     </head>
     <body>
         <header th:replace="layout/plantilla :: header"/>
         <div class="contenido">
-            <h2 th:text="#{cliente.datos}">Datos de Cliente</h2>
-            <a th:href="@{/cliente/listado}" th:text="#{accion.regresar}">Regresar</a>
+            <h2>Datos Cliente</h2>
+            <br/>
+            <a th:href="@{/cliente/listado}">Regresar</a>
             <br/>
             <form th:action="@{/cliente/guardar}"
                   method="post"
                   th:object="${cliente}">
+
                 <input type="hidden" name="idCliente" th:field="*{idCliente}"/>
-                <label for="nombre" th:text="#{cliente.nombre}">Nombre:</label>
-                <input type="text" name="nombre" th:field="*{nombre}"/>
+
+                <label for="nombre">Nombre:</label>
+                <input required="true" type="text" name="nombre" th:field="*{nombre}"/>
                 <br/>
-                <label for="apellidos" th:text="#{cliente.apellidos}">Apellidos:</label>
-                <input type="text" name="apellidos" th:field="*{apellidos}"/>
+                <label for="apellidos">Apellidos:</label>
+                <input required="true" type="text" name="apellidos" th:field="*{apellidos}"/>
                 <br/>
-                <label for="correo" th:text="#{cliente.correo}">Correo:</label>
-                <input type="text" name="correo" th:field="*{correo}"/>
+                <label for="correo">Correo:</label>
+                <input required="true" type="email" name="correo" th:field="*{correo}"/>
                 <br/>
-                <label for="telefono" th:text="#{cliente.telefono}">Telefono:</label>
-                <input type="text" name="telefono" th:field="*{telefono}"/>
+                <label for="telefono">Teléfono:</label>
+                <input required="true" type="tel" name="telefono" th:field="*{telefono}"/>
                 <br/>
-                <label for="limite" th:text="#{cliente.limite}">Limite de Credito:</label>
-                <input type="number" name="limite" th:field="*{credito.limite}"/>
-                <br/><br/>
-                <button type="submit" name="guardar" th:text="#{accion.guardar}"/>
+                <label for="limite">Límite de crédito:</label>
+                <input required="true" type="number" name="limite" th:field="*{credito.limite}"/>
                 <br/>
+                <input type="submit" name="guardar" value="Guardar" sec:authorize="hasRole('ROLE_ADMIN')"/>
             </form>
-        </div>    
+        </div>
         <footer th:replace="layout/plantilla :: footer"/>
     </body>
 </html>

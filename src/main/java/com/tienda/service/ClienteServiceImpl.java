@@ -14,21 +14,30 @@ public class ClienteServiceImpl implements ClienteService {
     
     @Autowired
     private ClienteDao clienteDao;
+
     @Autowired
     private CreditoDao creditoDao;
-
+    
+    public Cliente findByApellidos(Cliente cliente){
+        return ((List<Cliente>)clienteDao.findByApellidos(cliente.getApellidos())).get(0);
+    }
+    
     @Override
     @Transactional(readOnly = true)
     public List<Cliente> getClientes() {
-        return (List<Cliente>) clienteDao.findAll();
+        return (List<Cliente>)clienteDao.findAll();
     }
 
     @Override
     @Transactional
     public void save(Cliente cliente) {
+        //Recupero el objeto crédito que trae el cliente
         Credito credito = cliente.getCredito();
-        credito=creditoDao.save(credito);
+        //"salvo" el objeto credito en la bd
+        creditoDao.save(credito);
+        
         cliente.setCredito(credito);
+        
         clienteDao.save(cliente);
     }
 
@@ -40,13 +49,8 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     @Transactional(readOnly = true)
-    public Cliente getCliente(Cliente cliente) {
+    public Cliente getCliente(Cliente cliente) {        
         return clienteDao.findById(cliente.getIdCliente()).orElse(null);
     }
     
-    @Override
-    @Transactional(readOnly = true)
-    public Cliente getApellido(Cliente cliente) {
-        return clienteDao.findByApellidos(cliente.getApellidos());
-    }
 }

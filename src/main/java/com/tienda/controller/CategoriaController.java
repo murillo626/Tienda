@@ -12,19 +12,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 @Slf4j
 public class CategoriaController {
-    
+
     @Autowired
     private CategoriaService categoriaService;
-    
+
     @GetMapping("/categoria/listado")
     public String inicio(Model model) {
-        var categorias = categoriaService.getCategorias(false);
-        model.addAttribute("categorias",categorias);
+        var categorias = categoriaService.getCategorias();
+        model.addAttribute("categorias", categorias);
         return "/categoria/listado";
     }
-    
+
     @GetMapping("/categoria/nuevo")
-    public String nuevoCategoria(Categoria categoria) {
+    public String nuevoCategoria(Categoria categoria) {        
         return "/categoria/modifica";
     }
     
@@ -34,10 +34,10 @@ public class CategoriaController {
         return "redirect:/categoria/listado";
     }
     
-    @GetMapping("/categoria/modificar/{idCategoria}")
+    @GetMapping("/categoria/modifica/{idCategoria}")
     public String modificarCategoria(Categoria categoria, Model model) {
         categoria = categoriaService.getCategoria(categoria);
-        model.addAttribute("categoria", categoria);
+        model.addAttribute("categoria",categoria);
         return "/categoria/modifica";
     }
     
